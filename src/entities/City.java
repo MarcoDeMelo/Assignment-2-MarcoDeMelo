@@ -9,38 +9,23 @@ public class City {
     
     public Integer getID(){ return ID; }
 
-    public void setID(Integer ID)
-    {
-        this.ID = ID;
-    }
+    public void setID(Integer ID){this.ID = ID;}
 
     public String getName(){ return Name; }
 
-    public void setName(String name)
-    {
-        Name = name;
-    }
+    public void setName(String name){Name = name;}
 
     public String getCountryCode(){ return CountryCode; }
 
-    public void setCountryCode(String CountryCode)
-    {
-        this.CountryCode = CountryCode;
-    }
+    public void setCountryCode(String CountryCode){this.CountryCode = CountryCode;}
 
     public String getDistrict(){ return District; }
 
-    public void setDistrict(String District)
-    {
-        this.District = District;
-    }
+    public void setDistrict(String District){ this.District = District;}
 
     public Integer getPopulation() { return Population; }
 
-    public void setPopulation(Integer Population)
-    {
-        this.Population = Population;
-    }
+    public void setPopulation(Integer Population) {this.Population = Population; }
 
     @Override
     public String toString() {

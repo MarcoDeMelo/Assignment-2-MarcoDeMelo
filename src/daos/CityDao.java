@@ -38,6 +38,55 @@ public class CityDao implements Dao<City, Integer> {
         return cities;
     }
 
+    public List<City> findByPopOverMillion() {
+        List<City> cities = new ArrayList<>();
+    
+        String sql = "SELECT * FROM city WHERE Population > 1000000";
+    
+        try (Statement statement = connection.createStatement();
+             ResultSet result = statement.executeQuery(sql)) {
+    
+            while (result.next()) {
+                City city = new City();
+                city.setID(result.getInt("ID"));
+                city.setName(result.getString("Name"));
+                city.setCountryCode(result.getString("CountryCode"));
+                city.setDistrict(result.getString("District"));
+                city.setPopulation(result.getInt("Population"));
+                cities.add(city);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    
+        return cities;
+    }
+
+    public List<City> findByCountry(String countryCode) {
+        List<City> cities = new ArrayList<>();
+    
+        String sql = "SELECT * FROM city WHERE CountryCode = ?";
+    
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, countryCode);
+            ResultSet result = ps.executeQuery();
+    
+            while (result.next()) {
+                City city = new City();
+                city.setID(result.getInt("ID"));
+                city.setName(result.getString("Name"));
+                city.setCountryCode(result.getString("CountryCode"));
+                city.setDistrict(result.getString("District"));
+                city.setPopulation(result.getInt("Population"));
+                cities.add(city);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    
+        return cities;
+    }
+
     public void insert(City city)
     {
         try(Statement statement = connection.createStatement())
@@ -66,15 +115,16 @@ public class CityDao implements Dao<City, Integer> {
     }
     public Boolean update(City city)
     {
-        Boolean success = true;
+        Boolean success = false;
         String update = "UPDATE city SET population = ? WHERE ID = ?";
 
         try(PreparedStatement ps = connection.prepareStatement(update))
         {
             ps.setInt(1,city.getPopulation());
-            ps.setInt(1,city.getID());
+            ps.setInt(2,city.getID());
 
             ps.executeUpdate();
+            success = true;
         }
         catch(SQLException e)
         {
@@ -89,7 +139,7 @@ public class CityDao implements Dao<City, Integer> {
     {
         City city = new City();
 
-        String select = "SELECT  * FROM city WHERE id = ?" ;
+        String select = "SELECT  * FROM city WHERE ID = ?" ;
         try(PreparedStatement ps = connection.prepareStatement(select))
         {
             ps.setInt(1, pk);
@@ -126,7 +176,7 @@ public class CityDao implements Dao<City, Integer> {
             {
                 success = true;
             }
-
+            ps.executeUpdate();
         }
         catch(SQLException e)
         {
@@ -135,6 +185,38 @@ public class CityDao implements Dao<City, Integer> {
         }
         return success;
     }
+
+    public City findByName(String Name)
+    {
+        City city = new City();
+
+        String select = "SELECT  * FROM city WHERE Name = ?" ;
+        try(PreparedStatement ps = connection.prepareStatement(select))
+        {
+            ps.setString(1, Name);
+            ResultSet result  = ps.executeQuery();
+
+            if( result.next())
+            {
+                city.setCountryCode(result.getString("CountryCode"));
+                city.setDistrict(result.getString("District"));
+                city.setID(result.getInt("ID"));
+                city.setName(result.getString("Name"));
+                city.setPopulation(result.getInt("Population"));
+            }
+
+        }
+        catch(SQLException e)
+        {
+            System.err.println(e.getMessage());
+
+        }
+
+
+        return city;
+    }
+
+}
     
 
    

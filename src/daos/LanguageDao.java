@@ -20,13 +20,13 @@ public class LanguageDao implements Dao<Language, Language.PK> {
     
     public List<Language> findAll() {
         List<Language> languageList = new ArrayList<>();
-        try(Statement statement = connection.createStatement())
+        try(Statement ps = connection.createStatement())
         {
-            ResultSet result = statement.executeQuery("SELECT * FROM CountryLanguage");
+            ResultSet result = ps.executeQuery("SELECT * FROM CountryLanguage");
             while(result.next()){
                 Language language = new Language(
                     result.getString("CountryCode"), 
-                    result.getString("entities.Language"),
+                    result.getString("Language"),
                     result.getBoolean("IsOfficial"), 
                     result.getFloat("Percentage"));
 
